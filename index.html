@@ -11,7 +11,7 @@
 <body>
     <div class="container">
         <header>
-            <h1>Lépészám app</h1>
+            <h1 id="AppTitle"></h1>
             <span id="themeSwitch">
                 <i class="bi bi-brightness-high" id="lightModeBTN"></i>
                 <i class="bi bi-moon" id="darkModeBTN"></i>
@@ -31,10 +31,10 @@
                         <a class="nav-link active" aria-current="page" href="#">Menü</a>
                       </li>
                       <li class="nav-item">
-                        <a class="nav-link" href="#">Belépés</a>
+                        <a class="nav-link" href="#" onclick="render('login')">Belépés</a>
                       </li>
                       <li class="nav-item">
-                        <a class="nav-link" href="#">Regisztráció</a>
+                        <a class="nav-link" href="#" onclick="render('registration')">Regisztráció</a>
                       </li>
                     </ul>
                   </div>
@@ -45,13 +45,15 @@
           <!--Ide jon a miujsag-->
         </main>
         <footer>
-            <p>Bajai SZC Türr István Technikum</p>
-            <p>13/A szoft</p>
+            <p id="Company"></p>
+            <p id="Author"></p>
             <p>2025</p>
         </footer>
     </div>
 
     <script src="./assets/js/bootstrap.min.js"></script>
     <script src="./assets/js/app.js"></script>
+    
+    <script src="assets/controllers/userCtrl.js"></script>
 </body>
 </html>

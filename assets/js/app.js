@@ -1,7 +1,20 @@
+const AppTitle="Lépészámláló App";
+const Author="13. A Szoftverfejlesztő";
+const Company="Bajai SZC Türr István Technikum"
+
+let title=document.querySelector('#AppTitle')
+let company=document.querySelector('#Company')
+let author=document.querySelector('#Author')
+
 let lightModeBTN=document.querySelector('#lightModeBTN');
 let darkModeBTN=document.querySelector('#darkModeBTN');
 
+let main=document.querySelector('main');
 let theme='light';
+
+title.innerHTML=AppTitle;
+author.innerHTML=Author;
+company.innerHTML=Company;
 
 lightModeBTN.addEventListener('click', () => {
     setTheme('light');
@@ -48,5 +61,10 @@ function setThemeBTN(theme)
         darkModeBTN.classList.add('hide');
     }
 }
+async function render(view)
+{
+    main.innerHTML =await((await fetch(`views/${view}.html`)).text());
+}
 loadTheme();
+render('login');
 
