@@ -1,0 +1,2 @@
+# lepescuc
+lepesszamlalo frontend app
