@@ -52,7 +52,13 @@ async function registration() {
         console.log('Státusz',respond.status)
        
         const data = await respond.json();
-        alert(data)
+        alert(data.msg)
+        if(respond.status==200){
+            nameField.value='';
+            emailField.value='';
+            passwordField.value='';
+            confirmPasswordField.value='';
+        }
     }  
     catch(  err){
         console.log("Hiba történt! ", err)
