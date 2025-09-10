@@ -14,29 +14,29 @@ async function registration() {
     
 
     if(nameField.value==''||emailField.value==''||passwordField.value==''||confirmPasswordField.value=='')
-    {alert("NEm adatal meg minden adatot")
+    {showMessage('danger','Hiba','Nem adtál meg minden adatot')
         return;
     }
     if(passwordField.value!=confirmPasswordField.value)
     {
-        alert('A jelszavak nem egyeznek')
+        showMessage('danger','Hiba','A két jelszó nem egyezik')
         return;
     }
     if(!passRegExp.test(passwordField.value))
         {
-            alert("A jelszó nem elég bizonságos! ")
+            showMessage('danger','Hiba','A jelszó nem elég biztonságos')
             return;
         }
     
     if(!emailRegExp.test(emailField.value))
         {
-            alert("Az email nem jós! ")
+            showMessage('danger','Hiba','Foglalt email')
             return;
         }
         
 
     try{
-        const respond = await fetch('http://localhost:3000/users', {
+        const respond = await fetch(`${ServerURL}/users`, {
             method:"POST",
             headers: {
                 'Content-Type' : 'application/json'
@@ -52,21 +52,68 @@ async function registration() {
         console.log('Státusz',respond.status)
        
         const data = await respond.json();
-        alert(data.msg)
         if(respond.status==200){
             nameField.value='';
             emailField.value='';
             passwordField.value='';
             confirmPasswordField.value='';
+            showMessage('success','Makulátlan',data.msg)
         }
+        else{showMessage('danger','HIba',data.msg)}
     }  
     catch(  err){
         console.log("Hiba történt! ", err)
     }}
 
-function login() { }
+async function login() { 
 
-function logout() { }
+    let emailField = document.querySelector("#emailField");
+    let passwordField = document.querySelector("#passwordField");
+
+    if(emailField.value==''||passwordField.value=='')
+        {showMessage('danger','Hiba','Nem adtál meg minden adatot')
+            return;
+        }
+    let users=[];
+        
+    try{
+        let respond=await fetch(`${ServerURL}/users`);
+        users=await respond.json();
+        
+        
+        users.forEach(user=>{
+            if (user.email==emailField.value && user.password==passwordField.value)
+                {
+                    loggedUser=user;
+                    return;
+
+                }
+        });
+        if(!loggedUser)
+        {
+            console.log('Hibás belépési adatok')
+            return;
+        }
+        sessionStorage.setItem('loggedUser',JSON.stringify(loggedUser));
+        
+        getLoggedUser();
+        showMessage('success','OK','Sikeres blépés');
+
+    }
+    catch(err)
+    {
+        console.log('err',err);
+    }
+    
+    
+}
+
+
+function logout() {
+    sessionStorage.removeItem('loggedUser');
+    getLoggedUser();
+    render('login')
+ }
 
 function getProfile() { }
 
