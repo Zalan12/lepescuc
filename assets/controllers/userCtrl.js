@@ -126,6 +126,38 @@ function logout() {
 
 function getProfile() { }
 
-function updateProfile() { }
+async function updateProfile() {
+
+    let name=document.querySelector('#nameField');
+    let email=document.querySelector('#emailField');
+
+    if(name.value=='' || email.value=='')
+    {
+        showMessage('warning','Hiba','Üres adatokat nem adhatsz meg');
+    }
+    if(name.value==loggedUser.name ||email.value==loggedUser.email)
+    {
+        showMessage('warning','Hiba','Nem adhatsz meg jelenlegi adatokat')
+    }
+
+    try{
+        const resp=await fetch(`${ServerURL}/users/profile`);
+        const result=await resp.json();
+        console.log(result);
+
+    }
+    catch(err){alert("Baj van ",err)}
+   
+ }
+
+ function adatFelt()
+    {
+            let name=document.querySelector('#nameField');
+            let email=document.querySelector('#emailField');
+            name.value=loggedUser.name;
+            email.value=loggedUser.email;
+    }
+ ;
+ 
 
 function updatePassword() { }

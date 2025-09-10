@@ -67,6 +67,13 @@ function setThemeBTN(theme)
 async function render(view)
 {
     main.innerHTML =await((await fetch(`views/${view}.html`)).text());
+    if(view=="profile")
+        {
+            let name=document.querySelector('#nameField');
+            let email=document.querySelector('#emailField');
+            name.value=loggedUser.name;
+            email.value=loggedUser.email;
+        }
 }
 
 async function getLoggedUser()
