@@ -80,6 +80,7 @@ async function getLoggedUser()
     }
 
     else{
+        loggedUser=null;
         mainMenu.classList.remove('d-none');
         userMenu.classList.add('d-none');
         await render('login');

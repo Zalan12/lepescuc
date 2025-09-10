@@ -74,21 +74,30 @@ async function login() {
         {showMessage('danger','Hiba','Nem adtál meg minden adatot')
             return;
         }
-    let users=[];
+    let user={};
         
     try{
-        let respond=await fetch(`${ServerURL}/users`);
-        users=await respond.json();
-        
-        
-        users.forEach(user=>{
-            if (user.email==emailField.value && user.password==passwordField.value)
-                {
-                    loggedUser=user;
-                    return;
+        const respond=await fetch(`${ServerURL}/users/login`,
+            {
 
-                }
-        });
+                method:"POST",
+                headers: {
+                'Content-Type' : 'application/json'
+            },
+            body:
+                JSON.stringify({
+                email: emailField.value,
+                password: passwordField.value,
+            })
+        })
+;
+        
+        user=await respond.json();
+        
+        if(user.id!=undefined)
+            {
+                loggedUser=user;
+            };
         if(!loggedUser)
         {
             console.log('Hibás belépési adatok')
