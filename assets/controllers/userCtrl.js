@@ -124,40 +124,141 @@ function logout() {
     render('login')
  }
 
-function getProfile() { }
+async function getProfile() {
+          let nameField=document.querySelector('#nameField');
+    let emailField=document.querySelector('#emailField');
+
+    const loggedUser=JSON.parse(sessionStorage.getItem('loggedUser'))
+
+    try
+    {
+        const res = await fetch(`${ServerURL}/users/${loggedUser.id}`)
+        if(!res.ok){
+            showMessage('warning','Hiba','Nem sikerult lekerni a profil adatait')
+            return
+        }
+        const user=await res.json()
+        emailField.value=user.email;
+        nameField.value=user.name;
+        passwordField.value=user.password;
+    }
+    catch(err){
+        console.log(err)
+
+    }
+
+
+ }
 
 async function updateProfile() {
-
-    let name=document.querySelector('#nameField');
+      let name=document.querySelector('#nameField');
     let email=document.querySelector('#emailField');
+    let password=document.querySelector('#passwordField');
+    
 
     if(name.value=='' || email.value=='')
     {
         showMessage('warning','Hiba','Üres adatokat nem adhatsz meg');
+        return;
     }
     if(name.value==loggedUser.name ||email.value==loggedUser.email)
     {
-        showMessage('warning','Hiba','Nem adhatsz meg jelenlegi adatokat')
+        showMessage('warning','Hiba','Nem adhatsz meg jelenlegi adatokat');
+        return;
     }
-
     try{
-        const resp=await fetch(`${ServerURL}/users/profile`);
-        const result=await resp.json();
-        console.log(result);
-
+        const loggedUser=JSON.parse(sessionStorage.getItem('loggedUser'))
+        const res=await fetch(`${ServerURL}/users/${loggedUser.id}`,{
+            method:'PATCH',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                email:emailField.value,
+                name: nameField.value,
+                password:passwordField.value
+            })
+        })
+        if(!res.ok){
+            const data=await res.json();
+            console.log(data.msg)
+            showMessage('danger','Hiba',`${data.msg}`)
+            return
+        }
+        const updatedUser=await res.json()
+        sessionStorage.setItem('loggedUser',JSON.stringify(updatedUser.user))
+        showMessage('success','Siker','Felhasználó sikeresen frissitve')
+        setTimeout(login,3000);
+    
     }
-    catch(err){alert("Baj van ",err)}
+    catch(err)
+    {
+        console.log("hiba! ",err)
+    }
    
  }
+ 
 
- function adatFelt()
-    {
-            let name=document.querySelector('#nameField');
-            let email=document.querySelector('#emailField');
-            name.value=loggedUser.name;
-            email.value=loggedUser.email;
-    }
  ;
  
 
-function updatePassword() { }
+async function updatePassword() {
+    let password=document.querySelector("#passwordField");
+    let newPassword=document.querySelector("#newPasswordField");
+    let cNewPassword=document.querySelector("#confNewPasswordField");
+
+    if(password.value=="" || newPassword.value=="" || cNewPassword.value=="")
+    {
+        showMessage('warning','Hiba','Nem adtál meg minden adatot!')
+        return
+    }
+        if(!passRegExp.test(newPassword.value))
+        {
+            showMessage("danger",'Hiba','A jelszó nem elég erős!')
+            return
+        }
+    if(newPassword.value!=cNewPassword.value)
+    {showMessage('warning','Hiba','A jelszavak nem egyeznek!')
+        return
+    }
+
+    if(password.value==newPassword.value)
+        {
+            showMessage('warning','Hiba','Az új jelszó nem lehet a jelenlegi')
+            return
+        }
+    try{
+        const loggedUser=JSON.parse(sessionStorage.getItem('loggedUser'))
+        const res=await fetch(`${ServerURL}/users/jelszovalt/${loggedUser.id}`,{
+            method:'PATCH',
+            headers:{'Content-Type': 'application/json'
+
+            },
+            body: JSON.stringify({
+                password:password.value,
+                newPassword: newPassword.value
+            })
+        })
+        if(!res.ok){
+            const data=await res.json()
+            console.log(data.msg)
+            showMessage('danger','Hiba',data.msg)
+            return;
+
+        }
+        passwordField.value='';
+        newPassword.value='';
+        cNewPassword.value='';
+        const updatedUser = await res.json()
+        sessionStorage.setItem('loggedUser',JSON.stringify(updatedUser.user))
+        showMessage('success','NaonJo',"Faradt vagyok")
+        setTimeout(login,3000);
+
+    }
+    catch(err)
+    {
+        console.log(err);
+    }
+    
+
+ }
