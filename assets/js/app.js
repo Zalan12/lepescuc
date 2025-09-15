@@ -71,6 +71,7 @@ async function render(view)
         case 'main':
             {
                 setDate();
+                loadData();
                 break;
             }}
 
