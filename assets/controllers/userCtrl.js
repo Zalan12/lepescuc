@@ -251,7 +251,7 @@ async function updatePassword() {
         cNewPassword.value='';
         const updatedUser = await res.json()
         sessionStorage.setItem('loggedUser',JSON.stringify(updatedUser.user))
-        showMessage('success','NaonJo',"Faradt vagyok")
+        showMessage('success','Siker',"Sikeres felhasználó módosítás")
         setTimeout(login,3000);
 
     }

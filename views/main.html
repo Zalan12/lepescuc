@@ -1,3 +1,43 @@
 
 <h3>Lépésadatok Kezelése</h3>
 <hr>
+<div id="messageBox"></div>
+
+<!--Űrlap-->
+<div class="row">
+<div class="form-floating mb-3 col-12 col-lg-4">
+    <input type="date" class="form-control" id="dateField" placeholder="">
+    <label for="dateField">Dátum</label>
+  </div>
+  <div class="form-floating mb-3 col-12 col-lg-4">
+    <input type="number" class="form-control" id="stepcountField" placeholder="" min="0">
+    <label for="stepcountField">Lépésszám</label>
+  </div>
+  <div class="mb-3 col-12 col-lg-4">
+    <button class="btn btn-primary" id="addBtn" style="margin-top: 20px; width: 200px;" onclick="add()">Hozzáadás</button>
+    <button class="btn btn-warning" id="updateBtn" style="margin-top: 20px; width: 200px;" onclick="update()">Módosítás</button>
+    <button class="btn btn-danger" id="delBtn" style="margin-top: 20px; width: 200px;" onclick="del()">Törlés</button>
+    <button class="btn btn-secondary" id="cancelBtn" style="margin-top: 20px; width: 200px;" onclick="cancel()">Mégsem</button>
+  </div>
+  
+</div>
+<!--Táblázat-->
+
+<table class="table">
+    <thead>
+        <tr>
+            <th class="text-end">#</th>
+            <th class="text-end">Dátum</th>
+            <th class="text-end">Lépésszám</th>
+            <th class="text-end">Muveletek</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!--Ide jönnek a lépés adatok dinamikusan-->
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="4" class="text-center">Összesen: <span>0</span> lépés</td>
+        </tr>
+    </tfoot>
+</table>
